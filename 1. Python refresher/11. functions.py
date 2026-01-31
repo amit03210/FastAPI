@@ -109,18 +109,43 @@ def add_twice(func, y):
 print(add_twice(lambda x: x+1, 6))
 
 # 13. Use map() with a lambda to square a list of numbers [1, 2, 3, 4].
+squares =   list(map(lambda x:x*x, range(1,5)));
+print(squares)
 
 # 14. Use filter() with a lambda to keep only even numbers from [1, 2, 3, 4, 5, 6].
-
+even = list(filter(lambda x: x%2==0, range(1,11)))
+print(even)
 # -------------------------------
 # Challenge Exercises
 # -------------------------------
 
 # 15. Define a recursive function factorial(n).
 # Test with 5.
+def fact(n):
+    if n<=1:
+        return 1
+    return n * fact(n-1)
+print(fact(5))
 
 # 16. Define a function fibonacci(n) that returns the nth Fibonacci number.
 # Test with 7.
+def fibo(x):
+    if x == 1:
+        return 0
+    elif x == 2:
+        return 1
+    else:
+        return fibo(x-1) + fibo(x-2)
+print(fibo(7))
 
 # 17. Define a function that returns another function (closure) which adds a fixed number.
 # Example: make_adder(5) → returns a function that adds 5 to its input.
+
+def make_adder(y):
+    def adder(x):
+        return y+x;
+    return adder;
+
+x = make_adder(10)
+print(x);
+print(x(12))
