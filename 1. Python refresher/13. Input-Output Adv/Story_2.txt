@@ -1,0 +1,1 @@
+The % operator (modulo) can also be used for string formatting. Given format % values (where format is a string), % conversion specifications in format are replaced with zero or more elements of values. This operation is commonly known as string interpolation. For example:

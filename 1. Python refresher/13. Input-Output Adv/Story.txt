@@ -1,0 +1,1 @@
+& C:/Users/amits/AppData/Local/Programs/Python/Python312/python.exe "c:/Users/amits/OneDrive/Documents/FastAPI/1. Python refresher/13. Input-Output Adv/1. Input-Output Adv.py"
