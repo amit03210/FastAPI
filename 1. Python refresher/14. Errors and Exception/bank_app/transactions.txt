@@ -1,0 +1,7 @@
+deposit, 45
+deposit, 999
+
+Withdraw, 654
+deposit, 5641
+deposit, 541
+deposit, 501
