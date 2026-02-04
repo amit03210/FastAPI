@@ -24,6 +24,7 @@ def withdraw(balance, amount):
     with open("1. Python refresher\\14. Errors and Exception\\bank_app\\transactions.txt", "a") as f:
         f.write(f"Withdraw, {amount}\n")
     print("Amount withrawn, please collect your cash")
+    return balance
     
 
 def read_transaction():
