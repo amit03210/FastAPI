@@ -3,17 +3,13 @@ User model for E-Wallet system
 """
 
 class User:
-    # TODO:
     # - Class attribute to track total users created
-    pass
+    userCount = 0
 
     def __init__(self, name, user_id):
-        # TODO:
-        # - Initialize instance attributes
-        # - Increment total users count
-        pass
+        self.name = name
+        self.user_id = user_id
+        User.userCount += 1
 
     def __str__(self):
-        # TODO:
-        # - Return readable string representation
-        pass
+       return f'User has been created {self.name} with user id {self.user_id} and now total user is {User.userCount}'
