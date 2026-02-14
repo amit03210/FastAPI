@@ -22,6 +22,7 @@ class Book:
         if not self.borrowed:
             self.borrowed = True
             self.returned = False
+            self.isAvailable = False
         else:
             raise BookException("Book not Available")
 
@@ -29,6 +30,7 @@ class Book:
         if self.borrowed:
             self.returned = True
             self.borrowed = False
+            self.isAvailable = True
         else:
             raise BookException("This book is not from here")
 
