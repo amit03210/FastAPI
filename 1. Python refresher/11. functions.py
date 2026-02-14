@@ -149,3 +149,88 @@ def make_adder(y):
 x = make_adder(10)
 print(x);
 print(x(12))
+
+#1. Positional and Default argument
+# Exercise 1
+def power(base, exponent=2):
+    print(base**exponent)
+
+# Test cases
+power(5)        # Expected: 25
+power(2, 3)     # Expected: 8
+
+#2. Keyword default argument
+# Exercise 2
+def introduce(name, country="India", language="Python"):
+    print(f"My name is {name}, I'm from {country}, and I love {language}")
+
+# Test cases
+introduce("Alice")
+introduce(language="JavaScript", name="Bob", country="USA")
+
+#3. Variable-length argument
+# Exercise 3
+def average(*numbers):
+    sum = 0
+    for num in numbers:
+        sum += num
+    print(sum//len(numbers))
+
+# Test cases
+average(10, 20, 30)   # Expected: 20
+average(5, 15)        # Expected: 10
+
+#Arbitrary keyword argument
+# Exercise 4
+def profile(**details):
+    for x, y in details.items():
+        print(x, y)
+
+# Test cases
+profile(name="Alice", age=25, hobby="Coding")
+
+"""
+Write a function student_info that:
+- Takes a name (positional argument).
+- Has a default argument for course="Python".
+- Accepts any number of skills using *args.
+- Accepts extra details like age, city, etc. using **kwargs.
+"""
+
+def student_info(name, course="Python", *skills, **extra):
+    print(f"Name: {name}")
+    print(f"Course: {course}")
+    for x, y in extra.items():
+        print(x + ":" + str(y))
+    print("Skills:", end=" ")
+    print(*skills, sep=", ")
+student_info("Alice", "Data Science", "SQL", "Machine Learning", age=25, city="Lucknow")
+
+#Challenge: Write a function order_test that has all four types of arguments and prints them in order. Then call it with:
+
+def order_test( pos, defA=20, *args, **kwargs):
+    print(f"Positiona: {pos}")
+    print(f"Default: {defA}")
+    print(f"Args: {args}")
+    print(f"Kwargs: {kwargs}")
+
+order_test(10,99,30,40, 50, key1="A", key2="B")
+
+def mixed_args(a, b, c=5, d=10, *args, **kwargs):
+    print(f"a: {a}")
+    print(f"b: {b}")
+    print(f"c: {c}")
+    print(f"d: {d}")
+    print(f"args: {args}")
+    print(f"kwargs: {kwargs}")
+
+mixed_args(1, 2, 3, 4, 5, 6, x=100, y=200)
+
+def order_pizza(pizza_size, crust="thin", *toppings, **kwargs):
+    print(f"Size: {pizza_size}")
+    print(f"Crust: {crust}") 
+    print(f"Toppings: {toppings}")
+    print(f"Details: {kwargs}")
+
+order_pizza("Large", "Cheese Burst", "Olives", "Mushrooms", "Peppers", delivery_time="8 PM", address="Lucknow")
+
