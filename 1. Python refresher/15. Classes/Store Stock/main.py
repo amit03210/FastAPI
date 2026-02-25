@@ -8,3 +8,6 @@ INSTRUCTIONS:
 4. Create a @classmethod 'from_csv(cls, data_string)' that parses "Name,Price" 
    and returns a new Product instance.
 """
+
+def main():
+  
