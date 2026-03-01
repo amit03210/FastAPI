@@ -65,21 +65,70 @@
 # position_dict = {'name':'Rohan', 'Position': 'Junior Teacher', 'salary': 60000}
 # funArgs('Amit', *other, **position_dict)
 
-class Employee:
-    __slots__ = ['name', 'salary', 'role']
-    no_of_leaves = 8
+# class Employee:
+#     __slots__ = ['name', 'salary', 'role']
+#     no_of_leaves = 8
 
-    def __init__(self, name, salary, role):
-        self.name = name
-        self.salary = salary
-        self.role = role
+#     def __init__(self, name, salary, role):
+#         self.name = name
+#         self.salary = salary
+#         self.role = role
     
-    def __str__(self):
-        return f"Name: {self.name}, Salary: {self.salary}, Role: {self.role}"
+#     def __str__(self):
+#         return f"Name: {self.name}, Salary: {self.salary}, Role: {self.role}"
     
 
-harry = Employee("Harry", 288, "Instructor")
-rohan = Employee("Rohan", 129, "Supervisor")
+# harry = Employee("Harry", 288, "Instructor")
+# rohan = Employee("Rohan", 129, "Supervisor")
 
-print(harry.no_of_leaves)
-print(rohan.no_of_leaves)
+# print(harry.no_of_leaves)
+# print(rohan.no_of_leaves)
+
+# import inspect
+
+# print(inspect.getmembers(harry))
+
+# import this
+# print(this)
+
+# def gen(n):
+#     for i in range(n):
+#         yield i
+
+# def fibo(x):
+#     a, b = 0, 1
+#     print(a, b, end=" ")
+#     for i in range(x):
+#         a, b = b, a+b
+#         print(b, end=" ")
+
+
+# def fiboGen(x):
+#     a, b = 0, 1
+#     print(a, b, end=" ")
+#     for i in gen(x):
+#         a, b = b, a+b
+#         print(b, end=" ")
+# fiboGen(100000)
+
+# def fiboGen(x):
+#     a, b, = 0, 1
+#     yield a
+#     yield b
+#     for i in range(x):
+#         a, b = b, a+b
+#         yield b
+
+# for num in fiboGen(100000):
+#     print(num, end=" ")    
+
+def factGen(x):
+    result = 1
+    for y in range(1, x+1):
+        result *= y
+        yield result
+
+    
+for x in factGen(20):
+    print(x)
+    
