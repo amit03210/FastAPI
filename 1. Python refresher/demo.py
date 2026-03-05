@@ -122,13 +122,121 @@
 # for num in fiboGen(100000):
 #     print(num, end=" ")    
 
-def factGen(x):
-    result = 1
-    for y in range(1, x+1):
-        result *= y
-        yield result
+# def factGen(x):
+#     result = 1
+#     for y in range(1, x+1):
+#         result *= y
+#         yield result
 
     
-for x in factGen(20):
-    print(x)
+# for x in factGen(20):
+#     print(x)
     
+#Descriptors
+
+# class Ten:
+#     def __get__(self, obj, objType=None):
+#         return 10
+    
+# class A:
+#     val = 199
+#     ten = Ten()
+
+# a = A()
+# print(a.val) #Dictionary Lookup
+# print(a.ten) #Descriptor lookup
+
+# import os
+
+# class DirectorySize:
+#     def __get__(self, obj, objType=None):
+#         try:
+#             return len(os.listdir(obj.dirname))
+#         except FileNotFoundError:
+#             return "Wrong Directory name"
+            
+    
+# class A:
+#     dl = DirectorySize()
+#     def __init__(self, dirname):
+#         self.dirname = dirname
+
+# a = A("15. Classes")
+# print(a.dl)
+# print(a.dirname)
+
+# import logging
+
+# logging.basicConfig(level=logging.INFO)
+
+# class LoggedAgeAccess:
+#     def __get__(self, obj, objtype=None):
+#         value = obj.__age
+#         logging.info(f"Accessing {'age'} giving {value}")
+#         return value
+    
+#     def __set__(self, obj, value):
+#         logging.info(f'Updating {'age'} to {value}')
+#         obj.__age = value
+
+
+# class Person:
+#     age = LoggedAgeAccess()
+#     height = LoggedAgeAccess() # same varible '__age' get edited/accessed.
+#     def __init__(self, name, age, height):
+#         self.name = name
+#         self.age = age
+#         self.height = height
+
+#     def birthday(self):
+#         self.age += 1
+
+# #1. self.age = age in __init__
+# #2. → triggers LoggedAgeAccess.__set__(self=descriptor, obj=self(Person), value=age)
+# #3. → inside __set__, it does obj.__age = value
+# #4. → now the Person instance has a hidden attribute __age
+
+# mary = Person('Mary M', 30, 200)
+# mary.name
+# mary.age
+# mary.age = 100
+# print(mary.__dict__)
+# mary.birthday()
+# john = Person('John S', 19, 180)
+# john.age
+# mary.age
+# mary.height # issue _age is hardwired in LoggedAgeAccess descriptor, therefore it updating and accessing same variable.
+
+#Solution is customized name
+import logging
+logging.basicConfig(level=logging.INFO)
+
+class LoggedAccess:
+    def __set_name__(self, owner, name):
+        self.public_name = name
+        self.private_name = "_" + name
+    
+    def __get__(self, obj, objtype=None):
+        value = getattr(obj, self.private_name)
+        logging.info(f"Accessing {self.public_name} giving {self.private_name}")
+
+    def __set__(self, obj, value):
+        logging.info(f"Updating {self.public_name} to {value}")
+        setattr(obj, self.private_name, value)
+
+class Person:
+    name = LoggedAccess()
+    age = LoggedAccess()
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+
+mary = Person('Mary M', 23)
+
+print(mary.name)
+print(mary.age)
+print(vars(vars(Person)['age']))
+print(vars(Person.__dict__['name']))
+print(vars(mary))
