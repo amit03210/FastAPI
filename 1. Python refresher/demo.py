@@ -208,35 +208,89 @@
 # mary.height # issue _age is hardwired in LoggedAgeAccess descriptor, therefore it updating and accessing same variable.
 
 #Solution is customized name
-import logging
-logging.basicConfig(level=logging.INFO)
+# import logging
+# logging.basicConfig(level=logging.INFO)
 
-class LoggedAccess:
+# class LoggedAccess:
+#     def __set_name__(self, owner, name):
+#         self.public_name = name
+#         self.private_name = "_" + name
+    
+#     def __get__(self, obj, objtype=None):
+#         value = getattr(obj, self.private_name)
+#         logging.info(f"Accessing {self.public_name} giving {self.private_name}")
+
+#     def __set__(self, obj, value):
+#         logging.info(f"Updating {self.public_name} to {value}")
+#         setattr(obj, self.private_name, value)
+
+# class Person:
+#     name = LoggedAccess()
+#     age = LoggedAccess()
+
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+    
+
+# mary = Person('Mary M', 23)
+
+# print(mary.name)
+# print(mary.age)
+# print(vars(vars(Person)['age']))
+# print(vars(Person.__dict__['name']))
+# print(vars(mary))
+# 
+class Yes:
     def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = "_" + name
-    
-    def __get__(self, obj, objtype=None):
-        value = getattr(obj, self.private_name)
-        logging.info(f"Accessing {self.public_name} giving {self.private_name}")
+        self.pub_name = name
+        self.priv_name = "__" + name
 
+    def __get__(self, obj, objCls=None):
+        print(f"Getting value of {obj} of type {objCls}")
+        if obj:
+            return getattr(obj, self.priv_name)
+        # return getattr(objCls, self.pub_name, "Nothing here")
+    
     def __set__(self, obj, value):
-        logging.info(f"Updating {self.public_name} to {value}")
-        setattr(obj, self.private_name, value)
+        print("Setting...")
+        setattr(obj, self.priv_name, value)
 
-class Person:
-    name = LoggedAccess()
-    age = LoggedAccess()
 
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+class UseDescriptor:
+    alpha = Yes() 
+    beta = Yes()
+    def __init__(self,value, val2):
+        self.alpha = value
+        self.beta = val2
+        
     
+dd = UseDescriptor(22,11)
+# dd.alpha = "asdf"
+print(dd.alpha)
+print(dd.beta)
+print(dd.__dict__)
 
-mary = Person('Mary M', 23)
 
-print(mary.name)
-print(mary.age)
-print(vars(vars(Person)['age']))
-print(vars(Person.__dict__['name']))
-print(vars(mary))
+""" 
+Code:           UseDescriptor dd = UseDescriptor(22, 11)
+                     dd.alpha = 22
+                      ↓
+Python:              obj.alpha = 22  →  finds descriptor "alpha" in class
+                      ↓
+Descriptor:          Yes.__set__(dd, 22)
+                      ↓
+Two Variables:       self.pub_name = "alpha"   ← what user sees
+                     self.priv_name = "_alpha"  ← where data is stored
+                      ↓
+Safe Storage:        setattr(obj, self.priv_name, value)  
+                     → stores in obj.__dict__ as: _alpha = 22
+                      ↓
+No Recursion:        obj._alpha is NOT a descriptor  
+                     → Python stores directly → no further calls
+                      ↓
+Access:              dd.alpha → calls __get__ → reads obj._alpha → returns 22
+                      ↓
+Final State:         dd.__dict__ = {'_alpha': 22, '_beta': 11}
+                     dd.alpha = 22 (via descriptor)
+"""

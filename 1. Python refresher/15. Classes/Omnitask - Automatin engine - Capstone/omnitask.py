@@ -35,6 +35,8 @@ Diagram
 """
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
+import functools #for metadata of functions
+from typing import Protocol
 
 #Descriptor
 class PriorityValue:
@@ -64,11 +66,36 @@ class BaseTask(ABC):
     def execute(self) -> str:
         pass
 
+
+def require_auth(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+
+        return wrapper
+
 class BackupTask(BaseTask):
-    pass
+    @require_auth
+    def execute(self):
+        pass
 
 class CleanupTask(BaseTask):
-    pass
+    @require_auth
+    def execute(self):
+        pass
+
+#------------Log Protocol--------------
+class Logger(Protocol): 
+    def log_message(self: object, message: str) -> str:
+        return message
+
+class ConsoleLogger:
+    def log_message(self: object, message: str) -> int:
+        return message
+
+def print_log_message(logger: Logger, message):
+    print(logger.log_message)
+
+#------------------------------------
 
 @dataclass
 class TaskResult:
