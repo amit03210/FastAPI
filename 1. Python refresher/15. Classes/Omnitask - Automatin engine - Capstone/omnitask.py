@@ -64,6 +64,12 @@ class BaseTask(ABC):
     def execute(self) -> str:
         pass
 
+class BackupTask(BaseTask):
+    pass
+
+class CleanupTask(BaseTask):
+    pass
+
 @dataclass
 class TaskResult:
     task_name: str
