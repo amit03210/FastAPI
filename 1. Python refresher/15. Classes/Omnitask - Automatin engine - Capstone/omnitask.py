@@ -66,34 +66,39 @@ class PriorityValue:
 
 def require_auth(func):
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-
-        return wrapper
+    def wrapper(self, *args, **kwargs):
+        print(f"Initializing {self.__class__.__name__}....")
+        print(f"Security Check:", end=" ")
+        if (self.role == 'admin'):
+            print(f"Access Granted for {self.__class__.__name__}")
+            return func(self, *args, **kwargs)
+        else:
+            print("Access denied")
+    return wrapper
     
 class BaseTask(ABC):
     priority = PriorityValue()
 
-    def __init__(self, name: str, priority:int):
+    def __init__(self, name: str, priority:int, role: str):
         self.name = name
         self.priority = priority
+        self.role = role
 
     @abstractmethod
-    def execute(self) -> str:
+    def execute(self, role) -> str:
         pass
 
 class BackupTask(BaseTask):
     @require_auth
     def execute(self):
-        print("Initalizing DailyBackup....")
         print("Executing DailyBackup....")
-        return "Database backup completed successfully."
+        return "Database backup completed successfully.\n"
 
 class CleanupTask(BaseTask):
     @require_auth
     def execute(self):
-        print("Initializing CacheCleaner....")
         print("Executing CacheCleaner...")
-        return "Temporary Files removed."
+        return "Temporary Files removed.\n"
 
 #------------Log Protocol--------------
 class Logger(Protocol): 
@@ -113,12 +118,16 @@ class TaskEngine:
 
     total_tasks_executed = 0
 
-    def __init__(self, tasks: List[BaseTask]):
-        self.tasks = tasks
+    def __init__(self):
+        self.tasks = []
 
     def gen_Task(self):
         for task in self.tasks:
             yield task
+
+    def add_task(self, task: BaseTask):
+        self.tasks.append(task)
+
 
     def run_Engine(self):
         welcome_message = "--- Starting OmniTask Pipeline ---"
@@ -131,15 +140,21 @@ class TaskEngine:
             except Exception as e:
                 msg = str(e)
                 success = False
-            end_time = time.per_counter()
+            end_time = time.perf_counter()
 
             TaskEngine.total_tasks_executed += 1 
-        
+            print_log_message(ConsoleLogger(), f"Ran {task.name} in {end_time-start_time:.4f}s. Result: {msg}")
 
-x = BackupTask("Backup Task", 1)
-y = CleanupTask("Cleanup Task", 2)
-test = TaskEngine([x,y])
-test.run_Engine()
+        
+if __name__ == "__main__":
+
+    x = BackupTask("Backup Task", 1, 'admin')
+    y = CleanupTask("Cleanup Task", 2, 'admin')
+    test = TaskEngine()
+    test.add_task(x)
+    test.add_task(y)
+    test.run_Engine()
+    print(f"Grand Total Tasks Run: {TaskEngine.total_tasks_executed}")
 
 
 
