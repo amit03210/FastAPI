@@ -36,7 +36,16 @@ Diagram
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 import functools #for metadata of functions
-from typing import Protocol
+from typing import Protocol, List
+import time
+
+
+@dataclass
+class TaskResult:
+    task_name: str
+    status: bool
+    executioin_time: float
+    error_message: str
 
 #Descriptor
 class PriorityValue:
@@ -45,7 +54,7 @@ class PriorityValue:
         self.private_name = "__" + name
     
     def __set__(self, obj, value):
-        print(f"Modifying the value of {self.public_name} to {self.private_name}")
+        # print(f"Modifying the value of {self.public_name} to {value}")
         if not (1 <= value <= 10):
             raise ValueError("Priority must be between 1 and 10")
         obj.__dict__[self.private_name] = value
@@ -55,6 +64,12 @@ class PriorityValue:
         print(f"Accessing the value of {self.public_name}...")
         print(f"{self.public_name} is {value}")
 
+def require_auth(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+
+        return wrapper
+    
 class BaseTask(ABC):
     priority = PriorityValue()
 
@@ -66,44 +81,65 @@ class BaseTask(ABC):
     def execute(self) -> str:
         pass
 
-
-def require_auth(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-
-        return wrapper
-
 class BackupTask(BaseTask):
     @require_auth
     def execute(self):
-        pass
+        print("Initalizing DailyBackup....")
+        print("Executing DailyBackup....")
+        return "Database backup completed successfully."
 
 class CleanupTask(BaseTask):
     @require_auth
     def execute(self):
-        pass
+        print("Initializing CacheCleaner....")
+        print("Executing CacheCleaner...")
+        return "Temporary Files removed."
 
 #------------Log Protocol--------------
 class Logger(Protocol): 
-    def log_message(self: object, message: str) -> str:
+    def log(self, message: str) -> str:
         return message
 
 class ConsoleLogger:
-    def log_message(self: object, message: str) -> int:
+    def log(self, message: str) -> int:
         return message
 
 def print_log_message(logger: Logger, message):
-    print(logger.log_message)
+    print(logger.log(message))
 
 #------------------------------------
 
-@dataclass
-class TaskResult:
-    task_name: str
-    status: bool
-    executioin_time: float
-    error_message: str
+class TaskEngine:
 
+    total_tasks_executed = 0
+
+    def __init__(self, tasks: List[BaseTask]):
+        self.tasks = tasks
+
+    def gen_Task(self):
+        for task in self.tasks:
+            yield task
+
+    def run_Engine(self):
+        welcome_message = "--- Starting OmniTask Pipeline ---"
+        print_log_message(ConsoleLogger(), welcome_message)
+        for task in self.gen_Task():
+            start_time = time.perf_counter()
+            try:
+                msg = task.execute()
+                success = True
+            except Exception as e:
+                msg = str(e)
+                success = False
+            end_time = time.per_counter()
+
+            TaskEngine.total_tasks_executed += 1 
+        
+
+x = BackupTask("Backup Task", 1)
+y = CleanupTask("Cleanup Task", 2)
+test = TaskEngine([x,y])
+test.run_Engine()
 
 
 
