@@ -85,7 +85,7 @@ class BaseTask(ABC):
         self.role = role
 
     @abstractmethod
-    def execute(self, role) -> str:
+    def execute(self) -> str:
         pass
 
 class BackupTask(BaseTask):
