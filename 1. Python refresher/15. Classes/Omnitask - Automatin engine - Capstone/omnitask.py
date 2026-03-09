@@ -44,7 +44,7 @@ import time
 class TaskResult:
     task_name: str
     status: bool
-    executioin_time: float
+    execution_time: float
     error_message: str
 
 #Descriptor
@@ -64,7 +64,7 @@ class PriorityValue:
         print(f"Accessing the value of {self.public_name}...")
         print(f"{self.public_name} is {value}")
 
-def require_auth(func):
+def requires_auth(func):
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
         print(f"Initializing {self.__class__.__name__}....")
@@ -89,13 +89,13 @@ class BaseTask(ABC):
         pass
 
 class BackupTask(BaseTask):
-    @require_auth
+    @requires_auth
     def execute(self):
         print("Executing DailyBackup....")
         return "Database backup completed successfully.\n"
 
 class CleanupTask(BaseTask):
-    @require_auth
+    @requires_auth
     def execute(self):
         print("Executing CacheCleaner...")
         return "Temporary Files removed.\n"
@@ -103,7 +103,7 @@ class CleanupTask(BaseTask):
 #------------Log Protocol--------------
 class Logger(Protocol): 
     def log(self, message: str) -> str:
-        return message
+        ...
 
 class ConsoleLogger:
     def log(self, message: str) -> int:
@@ -115,7 +115,6 @@ def print_log_message(logger: Logger, message):
 #------------------------------------
 
 class TaskEngine:
-
     total_tasks_executed = 0
 
     def __init__(self):
@@ -141,9 +140,9 @@ class TaskEngine:
                 msg = str(e)
                 success = False
             end_time = time.perf_counter()
-
+            result = TaskResult(task.name, status = success, execution_time=end_time-start_time, error_message= None if success else msg)
             TaskEngine.total_tasks_executed += 1 
-            print_log_message(ConsoleLogger(), f"Ran {task.name} in {end_time-start_time:.4f}s. Result: {msg}")
+            print_log_message(ConsoleLogger(), f"Ran {result.task_name} in {result.execution_time:.4f}s. Message: {msg}")
 
         
 if __name__ == "__main__":
