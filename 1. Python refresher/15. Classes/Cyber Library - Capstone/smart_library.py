@@ -81,4 +81,56 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from typing import Protocol, List, Optional
 
+class TitleValidator:
+    
+    def __set_name__(self, obj, name):
+        self.pub_name = name
+    
+    def __get__(self, obj, objClass):
+        title = obj.__dict__[self.pub_name]
+        return title
+    
+    def __set__(self, obj, value):
+        if not isinstance(value, str):
+            raise ValueError("Title has to be a string formated")
+        elif len(value) == "":
+            raise ValueError("Title is empty")
+        else:
+         obj.__dict__[self.pub_name] = value
+         print(f"Setting title of {self.__dict__} to: {value}")
 
+# class TitleValidator:
+    
+#     def __set_name__(self, obj, name):
+#         self.pub_name = name
+#         self.private_name = "__" + name
+    
+#     def __get__(self, obj, objClass):
+#         title = getattr(obj, self.private_name)
+#         return title
+    
+#     def __set__(self, obj, value):
+#         if not isinstance(value, str):
+#             raise ValueError("Title has to be a string formated")
+#         elif len(value) == 0:
+#             raise ValueError("Title is empty")
+#         else:
+#          obj.__dict__[self.private_name] = value
+#          print(f"Setting title of book to: {value}")
+
+class Book:
+    title = TitleValidator()
+
+    def __init__(self, title):
+        self.title = title
+
+book1 = Book("Harry Potter")
+book2 = Book("Serpant and the water")
+
+print(book1.title)
+
+
+book1.title = "Cherry in Pot"
+print(book1.title)
+
+        
