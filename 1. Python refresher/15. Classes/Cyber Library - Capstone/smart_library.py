@@ -131,7 +131,8 @@ class BorrowLimit:
       #  if value 
        obj.__dict__[self.pub_name] = value
 
-
+class BaseMember(ABC):
+    pass
     
 class Book:
     title = TitleValidator()
