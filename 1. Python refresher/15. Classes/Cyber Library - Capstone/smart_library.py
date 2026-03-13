@@ -132,7 +132,13 @@ class BorrowLimit:
        obj.__dict__[self.pub_name] = value
 
 class BaseMember(ABC):
-    pass
+
+    def __init__(self):
+        self.borrowed_books = []
+
+    @abstractmethod
+    def get_membership_type():
+        pass
     
 class Book:
     title = TitleValidator()
