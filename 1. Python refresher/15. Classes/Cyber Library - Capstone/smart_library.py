@@ -148,6 +148,9 @@ class Book:
         self.isbn = isbn
         self.author = author
 
+class Student:
+    pass
+
 book1 = Book("Harry Potter")
 book2 = Book("Serpant and the water")
 
