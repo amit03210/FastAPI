@@ -148,8 +148,13 @@ class Book:
         self.isbn = isbn
         self.author = author
 
-class Student:
-    pass
+class Student(BaseMember):
+    def get_membership_type():
+        pass
+
+class Librarian(BaseMember):
+    def get_membership_type():
+        pass
 
 book1 = Book("Harry Potter")
 book2 = Book("Serpant and the water")
