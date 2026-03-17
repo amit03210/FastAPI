@@ -61,4 +61,10 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Protocol, List
 
-# --- START CODING YOUR SMART GRID BELOW ---
+class EfficiencyGuard:
+    
+    def __set__(self, obj, value):
+        if type(value) is not float:
+            raise ValueError("efficiency attribute should be of float type")
+        else:
+            obj.__dict__['']
