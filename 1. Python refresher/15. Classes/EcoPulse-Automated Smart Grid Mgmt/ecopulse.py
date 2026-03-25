@@ -68,3 +68,6 @@ class EfficiencyGuard:
             raise ValueError("efficiency attribute should be of float type")
         else:
             obj.__dict__['']
+
+def safety_check():
+    pass
