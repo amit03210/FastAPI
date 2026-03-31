@@ -1,0 +1,13 @@
+@"
+# Ignore build artifacts
+bin/
+obj/
+venv/
+
+# Ignore logs
+*.log
+
+# Ignore system files
+Thumbs.db
+.DS_Store
+"@ | Out-File -Encoding utf8 .gitignore
