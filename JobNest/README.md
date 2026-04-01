@@ -2,8 +2,6 @@
 
 # ## A platform where companies can post jobs and candidates can apply - built with a scalable, production-grade FastAPI backend
 
-
-
 🏛️ Architecture First
 
 ```
@@ -19,11 +17,11 @@
                 ┌──────────────────────┼──────────────────────┐
                 │                      │                       │
         ┌───────▼──────┐     ┌─────────▼────────┐   ┌────────▼───────┐
-        │  Auth Router  │     │   Jobs Router     │   │  Applications  │
-        │  /auth/*      │     │   /jobs/*         │   │  Router        │
-        └───────┬───────┘     └─────────┬─────────┘   └────────┬───────┘
-                │                       │                        │
-                └───────────────────────┼────────────────────────┘
+        │  Auth Router  │    │   Jobs Router     │   │  Applications  │
+        │  /auth/*      │    │   /jobs/*         │   │  Router        │
+        └───────┬───────┘    └─────────┬─────────┘   └────────┬───────┘
+                │                      │                        │
+                └──────────────────────┼────────────────────────┘
                                         │
                               ┌─────────▼────────┐
                               │   Database Layer  │
@@ -34,8 +32,6 @@
                               │    PostgreSQL DB  │
                               └───────────────────┘
 ```
-
-
 
 📁 Folder Structure
 
@@ -83,10 +79,8 @@ jobnest/
 ├── tests/                      # All tests live here
 │   └── test_auth.py
 │
-├── .env                       
+├── .env
 ├── .gitignore
 ├── requirements.txt
 └── README.md
 ```
-
-
