@@ -1,7 +1,14 @@
 from fastapi import FastAPI
-from datetime import datetime
+from app.core.config import settings
 
-app = FastAPI(title="JobNest", description="A scalable job board backend built with FastAPI", version="1.0.0")
+
+app = FastAPI(
+    title=settings.APP_NAME,
+    description=settings.APP_DESCRIPTION,
+    version=settings.APP_VERSION,
+    debug=settings.DEBUG,
+)
+
 
 @app.get("/")
 def health_check():
@@ -9,4 +16,4 @@ def health_check():
     Health check endpoint.
     Real-world use: Load balancer ping this to know if the server is alive.
     """
-    return {"status":"load",  "app" : "JobNest", 'date': datetime.today().strftime('%H:%M:%S')}
+    return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION}
