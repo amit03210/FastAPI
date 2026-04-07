@@ -10,10 +10,16 @@ app = FastAPI(
 )
 
 
-@app.get("/")
+@app.get("/health")
 def health_check():
     """
     Health check endpoint.
     Real-world use: Load balancer ping this to know if the server is alive.
     """
-    return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION}
+    return {
+        "status": "ok",
+        "app": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "allowed host": settings.ALLOWED_HOSTS,
+        "email": settings.CONTACT_EMAIL,
+    }
