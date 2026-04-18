@@ -22,4 +22,15 @@ def health_check():
         "version": settings.APP_VERSION,
         "allowed host": settings.ALLOWED_HOSTS,
         "email": settings.CONTACT_EMAIL,
+        "version": settings.APP_VERSION,
     }
+
+
+@app.on_event("startup")
+async def startup():
+    print("🚀 JobNest API is starting up...")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    print("🛑 JobNest API is shutting down...")
