@@ -16,6 +16,10 @@ class Base(DeclarativeBase):
 
 
 def get_db():
+    """
+    Provides database session to each request.
+    Automatically closes the session when the request is done.
+    """
     db = SessionLocal()
     try:
         yield db
