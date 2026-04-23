@@ -32,12 +32,12 @@ with engine.connect() as conn:
     )
     conn.commit() """
 
-## begin once
+""" ## begin once
 with engine.begin() as conn:
     conn.execute(
         text("INSERT INTO my_2nd_table (x, y) VALUES (:x, :y)"),
         [{"x": 6, "y": 8}, {"x": 9, "y": 10}, {"x": 13, "y": 11}, {"x": 20, "y": 9}],
-    )
+    ) """
 
 # Fetching Rows
 """with engine.connect() as conn:
@@ -55,6 +55,6 @@ with Session(engine) as session:
 with Session(engine) as session:
     result = session.execute(
         text("Update my_2nd_table SET y=:y WHERE x=:x"),
-        [{"x": 9, "y": 11}, {"x": 13, "y": 15}],
+        [{"x": 9, "y": 11}, {"x": 13, "y": 15}, {"x": 45, "y": 74}],
     )
     session.commit()
