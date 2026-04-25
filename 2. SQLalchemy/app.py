@@ -60,6 +60,7 @@ with Session(engine) as session:
             {"x": 13, "y": 15},
             {"x": 45, "y": 74},
             {"x": 60, "y": 100},
+            {"x": 70, "y": 69},
         ],
     )
     session.commit()
