@@ -59,8 +59,6 @@ with Session(engine) as session:
             {"x": 9, "y": 11},
             {"x": 13, "y": 15},
             {"x": 45, "y": 74},
-            {"x": 60, "y": 100},
-            
         ],
     )
     session.commit()
